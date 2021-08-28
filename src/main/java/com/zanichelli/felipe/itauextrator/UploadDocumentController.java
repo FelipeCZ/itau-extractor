@@ -38,17 +38,16 @@ public class UploadDocumentController {
     @PostMapping("/upload/extract/month")
     @ResponseBody
     @SneakyThrows
-	public Set<Transaction> handleFileUpload(@RequestParam("file") MultipartFile file) {
+	public Map<Category, List<Transaction>> handleFileUpload(@RequestParam("file") MultipartFile file) {
         BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream(), "UTF-8"));
         String line;
-        var estabelecimentos = new HashSet<Transaction>();
         while ((line = br.readLine()) != null) {
             var splited = line.split(";");
             var estabelecimento = splited[1];
             if (!LANCAMENTOS_IGNORADOS.contains(estabelecimento)) {
-                estabelecimentos.add(transactionService.classify(splited));
+                transactionService.classify(splited);
             }
         }
-        return estabelecimentos;
+        return transactionService.getAllMonthlyTransactionsGroupedByCategory(05, 2021);
 	}
 }

@@ -50,7 +50,11 @@ public class CategoryService {
             return allCategories.stream()
                 .filter(cat -> Pattern.matches(cat.getRegex(), softDescriptor))
                 .findFirst()
-                .orElse(new Category(softDescriptor, softDescriptor, true));
+                .orElseGet(() -> {
+                    var a = new Category(softDescriptor, softDescriptor, true);
+                    categoryRepository.save(a);
+                    return a;
+                });
         }
     }
 }

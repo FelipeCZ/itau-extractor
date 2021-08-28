@@ -19,7 +19,7 @@ public class Transaction {
     private BigInteger id;
     private LocalDate date;
     private String softDescriptor;
-    private BigDecimal value;
+    private BigDecimal amount;
 
     @ManyToOne
     private Category category;

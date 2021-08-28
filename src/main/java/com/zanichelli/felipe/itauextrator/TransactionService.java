@@ -2,6 +2,10 @@ package com.zanichelli.felipe.itauextrator;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +21,9 @@ public class TransactionService {
 
     public Transaction build(final String date, final String softDescriptor, final String amount) {
         Transaction t = new Transaction();
-        t.setDate(LocalDate.parse(date));
+        t.setDate(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         t.setSoftDescriptor(softDescriptor);
-        t.setValue(new BigDecimal(amount));
+        t.setAmount(new BigDecimal(amount.replaceAll("\\.", "").replaceAll(",", ".")).setScale(2));
         return t;
     }
 
@@ -28,6 +32,11 @@ public class TransactionService {
         t.setCategory(categoryService.newClassifier().findCategory(t.getSoftDescriptor()));
         transactionRepository.save(t);
         return t;
+    }
+
+    public Map<Category, List<Transaction>> getAllMonthlyTransactionsGroupedByCategory(int month, int year) {
+        var allT = transactionRepository.findAllByDateBetweenOrderByDate(LocalDate.parse("2021-05-01"), LocalDate.parse("2021-05-31"));
+        return allT.stream().collect(Collectors.groupingBy(it -> it.getCategory()));
     }
 
 }
