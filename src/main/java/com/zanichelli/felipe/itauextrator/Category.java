@@ -1,5 +1,8 @@
 package com.zanichelli.felipe.itauextrator;
 
+import java.util.List;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -13,7 +16,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Category {
     @Id
-    private String regex;
     private String name;
-    private transient Boolean temporary;
+    private Boolean ignored;
+    @ElementCollection
+    private List<String> regex;
 }
