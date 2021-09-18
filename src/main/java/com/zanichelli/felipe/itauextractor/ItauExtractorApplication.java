@@ -1,13 +1,13 @@
-package com.zanichelli.felipe.itauextrator;
+package com.zanichelli.felipe.itauextractor;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ItauExtratorApplication {
+public class ItauExtractorApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ItauExtratorApplication.class, args);
+		SpringApplication.run(ItauExtractorApplication.class, args);
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.zanichelli.felipe.itauextrator;
+package com.zanichelli.felipe.itauextractor;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

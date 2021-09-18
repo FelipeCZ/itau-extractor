@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.zanichelli.felipe</groupId>
-	<artifactId>itau-extrator</artifactId>
+	<artifactId>itau-extractor</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>itau-extrator</name>
+	<name>itau-extractor</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>

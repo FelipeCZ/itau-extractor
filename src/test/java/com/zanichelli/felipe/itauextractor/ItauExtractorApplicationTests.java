@@ -1,10 +1,10 @@
-package com.zanichelli.felipe.itauextrator;
+package com.zanichelli.felipe.itauextractor;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ItauExtratorApplicationTests {
+class ItauExtractorApplicationTests {
 
 	@Test
 	void contextLoads() {

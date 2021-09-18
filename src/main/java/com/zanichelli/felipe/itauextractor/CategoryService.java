@@ -1,4 +1,4 @@
-package com.zanichelli.felipe.itauextrator;
+package com.zanichelli.felipe.itauextractor;
 
 import java.util.Arrays;
 import java.util.List;
