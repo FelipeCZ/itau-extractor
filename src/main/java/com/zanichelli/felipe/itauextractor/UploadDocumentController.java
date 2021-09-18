@@ -1,13 +1,8 @@
 package com.zanichelli.felipe.itauextractor;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.glassfish.jersey.internal.guava.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,15 +23,7 @@ public class UploadDocumentController {
     @ResponseBody
     @SneakyThrows
 	public Map<String, List<Transaction>> handleFileUpload(@RequestParam("file") final MultipartFile file, @PathVariable final int month, @PathVariable int year) {
-        transactionService.resetMonth(month, year);
-        BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream(), "UTF-8"));
-        var allLines = new ArrayList<String[]>();
-        String line;
-        while ((line = br.readLine()) != null) {
-            var splited = line.split(";");
-            allLines.add(splited);
-        }
-        transactionService.classify(allLines);            
+        transactionService.processFile(file.getInputStream(), month, year);
         return transactionService.getAllMonthlyTransactionsGroupedByCategory(month, year);
 	}
 }

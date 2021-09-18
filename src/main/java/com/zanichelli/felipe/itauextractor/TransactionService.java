@@ -1,5 +1,7 @@
 package com.zanichelli.felipe.itauextractor;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -11,6 +13,11 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import lombok.SneakyThrows;
+
+import java.io.InputStreamReader;
 
 @Service
 public class TransactionService {
@@ -22,7 +29,7 @@ public class TransactionService {
     private CategoryService categoryService;
 
     public void resetMonth(final int month, final int year) {
-        transactionRepository.findAllByDateBetweenOrderByDate(toFirstDayOfMonth(month, year), toLastDayOfMonth(month, year));
+        transactionRepository.deleteAllByDateBetweenOrderByDate(toFirstDayOfMonth(month, year), toLastDayOfMonth(month, year));
     }
 
     public Transaction build(final String date, final String softDescriptor, final String amount) {
@@ -57,6 +64,24 @@ public class TransactionService {
 
     private LocalDate toLastDayOfMonth(final int month, final int year) {
         return toFirstDayOfMonth(month, year).plusMonths(1).minusDays(1);
+    }
+
+    @SneakyThrows
+    @Transactional
+    public void processFile(final InputStream inputStream, final int month, final int year) {
+        resetMonth(month, year);
+        var isr = new InputStreamReader(inputStream, "UTF-8");
+        var br = new BufferedReader(isr);
+        var allLines = new ArrayList<String[]>();
+        String line;
+        while ((line = br.readLine()) != null) {
+            var splited = line.split(";");
+            allLines.add(splited);
+        }
+        classify(allLines);
+        br.close();
+        isr.close();
+        inputStream.close();
     }
 
 }
